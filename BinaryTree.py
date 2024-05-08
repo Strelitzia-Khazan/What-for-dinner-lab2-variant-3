@@ -63,34 +63,77 @@ def get_parent(root, value):
     return None
 
 def remove(root, value):
-    if root is None or root.value == value:
+    if root is None:
         return None
-
-    def find_min(node):
-        while node.left:
-            node = node.left
-        return node
-
-    def delete(node, val):
-        if node is None:
-            return None
-        if val < node.value:
-            node.left = delete(node.left, val)
-        elif val > node.value:
-            node.right = delete(node.right, val)
+    parent = get_parent(root, value)
+    if parent is not None:
+        if parent.left and parent.left.value == value:
+            delete_node = parent.left
         else:
-            node_copy = copy(node)
-            if node.left is None:
-                return node_copy.right
-            elif node.right is None:
-                return node_copy.left
+            delete_node = parent.right
+        if delete_node is not None:
+            new_root = BinaryTreeNode(root.value)
+            new_root.left = root.left
+            new_root.right = root.right
+            if delete_node.left is None:
+                if parent.left and parent.left.value == value:
+                    new_parent = BinaryTreeNode(parent.value)
+                    new_parent.left = delete_node.right
+                    if parent.right:
+                        new_parent.right = parent.right
+                    new_root.left = new_parent
+                else:
+                    new_parent = BinaryTreeNode(parent.value)
+                    new_parent.right = delete_node.right
+                    new_root.right = new_parent
+            elif delete_node.right is None:
+                if parent.left and parent.left.value == value:
+                    new_parent = BinaryTreeNode(parent.value)
+                    new_parent.left = delete_node.left
+                    if parent.right:
+                        new_parent.right = parent.right
+                    new_root.left = new_parent
+                else:
+                    new_parent = BinaryTreeNode(parent.value)
+                    new_parent.right = delete_node.left
+                    new_root.right = new_parent
+            else:  # left and right all are not None
+                tmp_pre = delete_node
+                tmp_next = delete_node.right
+                while tmp_next.left:
+                    tmp_pre = tmp_next
+                    tmp_next = tmp_next.left
 
-            min_node = find_min(node_copy.right)
-            node_copy.value = min_node.value
-            node_copy.right = delete(node_copy.right, min_node.value)
-        return node_copy   
-    new_root = delete(root, value)
-    return new_root   
+                new_delete_node = BinaryTreeNode(delete_node.value)
+                new_delete_node.left = delete_node.left
+                new_delete_node.right = delete_node.right
+
+                if tmp_pre == delete_node:
+                    new_tmp_pre = new_delete_node
+                else:
+                    new_tmp_pre = BinaryTreeNode(tmp_pre.value)
+                    new_tmp_pre.left = tmp_pre.left
+                    new_tmp_pre.right = tmp_pre.right
+
+                if parent.left and parent.left.value == value:
+                    new_parent = BinaryTreeNode(parent.value)
+                    new_parent.left = tmp_next
+                    new_parent.right = parent.right
+                    new_root.left = new_parent
+                else:
+                    new_parent = BinaryTreeNode(parent.value)
+                    new_parent.right = tmp_next
+                    new_root.right = new_parent
+                    
+                if new_tmp_pre != new_delete_node:
+                    new_tmp_pre.left = tmp_next.right
+                    tmp_next.right = new_delete_node.right
+
+            return new_root
+        else:
+            return False
+    else:
+        return False
 
 def to_list(root):
     if root is None or root.value is None:
@@ -189,3 +232,10 @@ def intersection(root_A, root_B):
         if value in list_B:
             result_list.append(value)
     return result_list
+
+def member(root, value):
+    list = to_list(root)
+    if value in list:
+        return True
+    else:
+        return False
