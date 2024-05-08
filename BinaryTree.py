@@ -71,7 +71,7 @@ def remove(root, value):
             node = node.left
         return node
 
-    def delete(node,val):
+    def delete(node, val):
         if node is None:
             return None
         if val < node.value:
@@ -92,12 +92,12 @@ def remove(root, value):
     new_root = delete(root, value)
     return new_root   
 
-def to_list_pre_order(root):
+def to_list(root):
     if root is None or root.value is None:
         return []
     result_list = [root.value]
-    left_list = to_list_pre_order(root.left)
-    right_list = to_list_pre_order(root.right)
+    left_list = to_list(root.left)
+    right_list = to_list(root.right)
     return result_list + left_list + right_list
 
 def get_depth(node):
@@ -123,7 +123,7 @@ def from_list(lst):
     return root
 
 def filter(root):
-    filter_list = to_list_pre_order(root)
+    filter_list = to_list(root)
     result_list = []
     for value in filter_list:
         if isinstance(value, int):
@@ -147,12 +147,12 @@ def map(root,function):
 
 def reduce(root, function, initial_state=0):
     state = initial_state
-    result_list = to_list_pre_order(root)
+    result_list = to_list(root)
     for value in result_list:
         state = function(state, value)
     return state
 
-def mempty():
+def empty():
     return None
 
 def iterator(root):
@@ -160,7 +160,7 @@ def iterator(root):
         return None
     node_queue = [root]
 
-    def gengerate_value():
+    def generate_value():
         if node_queue is None:
             raise StopIteration
         current_node = node_queue.pop(0)
@@ -169,9 +169,9 @@ def iterator(root):
         if current_node.right is not None:
             node_queue.append(current_node.right)
         return current_node.value
-    return gengerate_value
+    return generate_value
 
-def concat(root_A,root_B):
+def concat(root_A, root_B):
     if root_A is None:
         return root_B
     if root_B is None:
@@ -182,8 +182,8 @@ def concat(root_A,root_B):
     return BinaryTreeNode(new_value, new_left, new_right)
 
 def intersection(root_A, root_B):
-    list_A = to_list_pre_order(root_A)
-    list_B = to_list_pre_order(root_B)
+    list_A = to_list(root_A)
+    list_B = to_list(root_B)
     result_list = []
     for value in list_A:
         if value in list_B:

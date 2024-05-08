@@ -6,9 +6,9 @@ enough for educational purposes.
 
 ## Project structure
 
-- `foo.py` -- implementation of `Foo` class with `hello` and `add` features.
-   Stateless.
-- `foo_test.py` -- unit and PBT tests for `Foo`.
+- `BinaryTree.py` -- implementation of `BinaryTree` class and `BinaryTreeNode` class.
+
+- `BinaryTree_test.py` -- unit and PBT tests for `BinaryTree`
 
 ## Features
 
@@ -16,15 +16,19 @@ enough for educational purposes.
 
 ## Contribution
 
-- Aleksandr Penskoi (EMAIL) -- all work.
+- Lu Bin (1476683166@qq.com) -- BinaryTree.py.
+- Wang Yining (351432511@qq.com) -- BinaryTree_test.py.
 
 ## Changelog
 
+
+- 05.05.2024 - 2
+  - Implement unit test.
 - 29.03.2022 - 2
   - Add test coverage.
 - 29.03.2022 - 1
-  - Update README. Add formal sections.
-- 29.03.2022 - 0
+  - Update README.
+- 29.05.2024 - 0
   - Initial
 
 ## Design notes
