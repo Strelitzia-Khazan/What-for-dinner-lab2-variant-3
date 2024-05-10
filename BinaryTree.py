@@ -6,6 +6,9 @@ class BinaryTreeNode:
 
     def get_value(self):
         return self.value
+    
+    def __str__(self):
+        return str(to_set(self))
 
     def __eq__(self, other):
         if self is None and other is None:
@@ -27,7 +30,7 @@ def copy(root):
     new_root.right = copy(root.right)
     return new_root
 
-def add(root, value):
+def add(value, root):
     if root is None and value is None:
         return None
     add_node = BinaryTreeNode(value)
@@ -35,7 +38,6 @@ def add(root, value):
         return add_node
     new_root = copy(root)
     node_queue = [new_root]
-
     while node_queue:
         node = node_queue.pop(0)
         if node.left:
@@ -82,7 +84,9 @@ def find_leaf_node(root, node):
 
 def remove(root, value):
     if root is None:
-        return False
+        return None
+    if value is None:
+        return root
     new_root = copy(root)
     parent = get_parent(root, value)
     new_parent = get_parent(new_root, value)
@@ -116,11 +120,12 @@ def remove(root, value):
                     parent.left = alternative_node
                 else:
                     parent.right = alternative_node
-            return True
+            return new_root
         else:
-            return False
+            return root
     else:
         if root.value == value:
+            delete_node = new_root
             leaf_node = find_leaf_node(delete_node)
             new_root = leaf_node
             leaf_node_parent = get_parent(root, leaf_node)
@@ -130,10 +135,18 @@ def remove(root, value):
                 leaf_node_parent.left = None
             new_root.left = root.left
             new_root.right = root.right
-            return True
+            return new_root
         else:
-            return False
-    
+            return root
+        
+def to_set(root):
+    if root is None or root.value is None:
+        return set()
+    result_set = {root.value}
+    left_set = to_set(root.left)
+    right_set = to_set(root.right)
+    return result_set.union(left_set, right_set)
+ 
 def to_list(root):
     if root is None or root.value is None:
         return []
@@ -164,18 +177,21 @@ def from_list(lst):
         root = add(root, value)
     return root
 
-def filter(root):
+def filter(root,function):
     filter_list = to_list(root)
+    result_list = function(filter_list)
+    return result_list
+
+"""    
     result_list = []
     for value in filter_list:
         if isinstance(value, int):
             result_list.append(value)
-    return result_list
+"""
 
 def map(root,function):
     if root is None:
         return None
-
     def apply_map(root):
         if root is None:
             return None
@@ -183,7 +199,6 @@ def map(root,function):
         new_node.left = apply_map(root.left)
         new_node.right = apply_map(root.right)
         return new_node
-
     new_root = apply_map(root)
     return new_root
 
@@ -195,7 +210,7 @@ def reduce(root, function, initial_state=0):
     return state
 
 def mempty():
-    return None
+    return {None}
 
 def iterator(root):
     if root is None:
@@ -218,12 +233,15 @@ def concat(root_A, root_B):
         return root_B
     if root_B is None:
         return root_A
-    new_value = root_A.value + root_B.value
-    new_left = concat(root_A.left, root_B.left)
-    new_right = concat(root_A.right, root_B.right)
-    return BinaryTreeNode(new_value, new_left, new_right)
+    list_A = to_list(root_A)
+    list_B = to_list(root_B)
+    new_list = list_A + list_B
+    new_root = from_list(new_list)
+    return new_root
 
 def intersection(root_A, root_B):
+    if root_A is None or root_B is None:
+        return None
     list_A = to_list(root_A)
     list_B = to_list(root_B)
     result_list = []
@@ -232,7 +250,7 @@ def intersection(root_A, root_B):
             result_list.append(value)
     return result_list
 
-def member(root, value):
+def member(value, root):
     list = to_list(root)
     if value in list:
         return True
