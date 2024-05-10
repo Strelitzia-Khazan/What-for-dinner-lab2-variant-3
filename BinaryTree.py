@@ -29,7 +29,7 @@ def copy(root):
 
 def add(root, value):
     if value is None:
-        return # No node is generated when value is none
+        return None # No node is generated when value is none
     add_node = BinaryTreeNode(value)
     if root is None:
         return add_node
