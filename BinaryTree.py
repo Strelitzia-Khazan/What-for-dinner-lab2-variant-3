@@ -66,7 +66,7 @@ def get_parent(root, value):
 
 def remove(root, value):
     if root is None:
-        return None
+        return False
     parent = get_parent(root, value)
     if parent is not None:
         if parent.left and parent.left.value == value:
@@ -131,7 +131,7 @@ def remove(root, value):
                     new_tmp_pre.left = tmp_next.right
                     tmp_next.right = new_delete_node.right
 
-            return new_root
+            return True
         else:
             return False
     else:
