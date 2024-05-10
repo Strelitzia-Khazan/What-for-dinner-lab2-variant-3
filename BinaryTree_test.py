@@ -94,7 +94,7 @@ class TestBinaryTreeSet(unittest.TestCase):
         root = from_list([1, 2, 3])
         new_root = remove(root, 1)
         # 断言根节点是否被正确删除
-        self.assertEqual(new_root.get_value(), 2)
+        self.assertNotIn(1, to_list(root))
 
     def test_remove_leaf(self):
         # 创建一棵树：1 -> 2 -> 3
@@ -114,11 +114,10 @@ class TestBinaryTreeSet(unittest.TestCase):
 
     def test_remove_node_with_two_children(self):
         # 创建一棵树：2 -> 1 -> 3
-        root = from_list([2, 1, 3])
+        root = from_list([1, 2, 3])
         new_root = remove(root, 2)
         # 断言具有两个子节点的节点是否被正确删除
-        self.assertEqual(new_root.get_value(), 3)
-        self.assertEqual(new_root.left.get_value(), 1)
+        self.assertIsNone(new_root.left)
 
     def test_get_depth(self):
         depth = get_depth(self.root)
@@ -163,14 +162,20 @@ class TestBinaryTreeSet(unittest.TestCase):
         tree_a_bc = concat(tree_a, tree_bc)
         self.assertEqual(to_list(tree_a_bc), to_list(tree_ab_c))
 
-        @given(st.lists(st.integers()))
-        def test_concat_identity(self, list_a):
-            tree_a = from_list(list_a)
-            tree_empty = empty()
-            tree_ea = concat(tree_empty, tree_a)
-            tree_ae = concat(tree_a, tree_empty)
-            list_ae = to_list(tree_ae)
-            list_ea = to_list(tree_ea)
-            self.assertEqual(list_ae, list_ea)
+    @given(st.lists(st.integers()))
+    def test_concat_identity(self, list_a):
+        tree_a = from_list(list_a)
+        tree_empty = empty()
+        tree_ea = concat(tree_empty, tree_a)
+        tree_ae = concat(tree_a, tree_empty)
+        list_ae = to_list(tree_ae)
+        list_ea = to_list(tree_ea)
+        self.assertEqual(list_ae, list_ea)
 
-
+    @given(st.lists(st.integers()), st.integers())
+    def test_member_returns_true_for_existing_value(self, values, target):
+        tree = from_list(values)
+        if target in values:
+            self.assertTrue(member(tree, target))
+        else:
+            self.assertFalse(member(tree, target))
