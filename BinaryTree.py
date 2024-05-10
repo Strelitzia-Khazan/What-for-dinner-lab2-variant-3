@@ -19,8 +19,6 @@ class BinaryTreeNode:
         else:
             return False
 
-
-
 def copy(root):
     if root is None:
         return None
@@ -30,6 +28,8 @@ def copy(root):
     return new_root
 
 def add(root, value):
+    if value is None:
+        return # No node is generated when value is none
     add_node = BinaryTreeNode(value)
     if root is None:
         return add_node
@@ -64,79 +64,76 @@ def get_parent(root, value):
             node_queue.append(node.right)
     return None
 
+def find_leaf_node(root, node):
+    if root is None:
+        return None
+    stack = [root]
+    while stack:
+        current_node = stack.pop()
+        # If the current node is a leaf node and not the input node's child
+        if current_node.left is None and current_node.right is None and current_node != node.left and current_node != node.right:
+            return current_node
+        # Push the right child first to ensure left child is visited first
+        if current_node.right:
+            stack.append(current_node.right)
+        if current_node.left:
+            stack.append(current_node.left)
+    return None
+
 def remove(root, value):
     if root is None:
         return False
+    new_root = copy(root)
     parent = get_parent(root, value)
+    new_parent = get_parent(new_root, value)
     if parent is not None:
         if parent.left and parent.left.value == value:
-            delete_node = parent.left
+            delete_node = new_parent.left
         else:
-            delete_node = parent.right
+            delete_node = new_parent.right
         if delete_node is not None:
-            new_root = BinaryTreeNode(root.value)
-            new_root.left = root.left
-            new_root.right = root.right
             if delete_node.left is None:
-                if parent.left and parent.left.value == value:
-                    new_parent = BinaryTreeNode(parent.value)
+                if parent.left.value == value:
                     new_parent.left = delete_node.right
-                    if parent.right:
-                        new_parent.right = parent.right
-                    new_root.left = new_parent
                 else:
-                    new_parent = BinaryTreeNode(parent.value)
                     new_parent.right = delete_node.right
-                    new_root.right = new_parent
             elif delete_node.right is None:
-                if parent.left and parent.left.value == value:
-                    new_parent = BinaryTreeNode(parent.value)
+                if parent.left.value == value:
                     new_parent.left = delete_node.left
-                    if parent.right:
-                        new_parent.right = parent.right
-                    new_root.left = new_parent
                 else:
-                    new_parent = BinaryTreeNode(parent.value)
                     new_parent.right = delete_node.left
-                    new_root.right = new_parent
             else:  # left and right all are not None
-                tmp_pre = delete_node
-                tmp_next = delete_node.right
-                while tmp_next.left:
-                    tmp_pre = tmp_next
-                    tmp_next = tmp_next.left
-
-                new_delete_node = BinaryTreeNode(delete_node.value)
-                new_delete_node.left = delete_node.left
-                new_delete_node.right = delete_node.right
-
-                if tmp_pre == delete_node:
-                    new_tmp_pre = new_delete_node
+                leaf_node = find_leaf_node(delete_node)
+                alternative_node = leaf_node
+                leaf_node_parent = get_parent(root, leaf_node)
+                if leaf_node_parent.left.value == leaf_node.value:
+                    leaf_node_parent.left = None
                 else:
-                    new_tmp_pre = BinaryTreeNode(tmp_pre.value)
-                    new_tmp_pre.left = tmp_pre.left
-                    new_tmp_pre.right = tmp_pre.right
-
-                if parent.left and parent.left.value == value:
-                    new_parent = BinaryTreeNode(parent.value)
-                    new_parent.left = tmp_next
-                    new_parent.right = parent.right
-                    new_root.left = new_parent
+                    leaf_node_parent.left = None
+                alternative_node.left = delete_node.left
+                alternative_node.right = delete_node.right
+                if parent.left.value == value:
+                    parent.left = alternative_node
                 else:
-                    new_parent = BinaryTreeNode(parent.value)
-                    new_parent.right = tmp_next
-                    new_root.right = new_parent
-
-                if new_tmp_pre != new_delete_node:
-                    new_tmp_pre.left = tmp_next.right
-                    tmp_next.right = new_delete_node.right
-
+                    parent.right = alternative_node
             return True
         else:
             return False
     else:
-        return False
-
+        if root.value == value:
+            leaf_node = find_leaf_node(delete_node)
+            new_root = leaf_node
+            leaf_node_parent = get_parent(root, leaf_node)
+            if leaf_node_parent.left.value == leaf_node.value:
+                leaf_node_parent.left = None
+            else:
+                leaf_node_parent.left = None
+            new_root.left = root.left
+            new_root.right = root.right
+            return True
+        else:
+            return False
+    
 def to_list(root):
     if root is None or root.value is None:
         return []
