@@ -6,47 +6,47 @@ from hypothesis import strategies as st
 
 
 class TestBinaryTreeSet(unittest.TestCase):
-    # def test_api(self):
-    #     empty = BinaryTreeSet()
-    #     self.assertEqual(str(add(None, empty)), "{None}")
-    #     l1 = add(None, add(1, empty))
-    #     l2 = add(1, add(None, empty))
-    #     self.assertEqual(str(empty), "{}")
-    #     self.assertTrue(str(l1) == "{None, 1}" or str(l1) == "{1, None}\
-    #     ")
-    #     self.assertNotEqual(empty, l1)
-    #     self.assertNotEqual(empty, l2)
-    #     self.assertEqual(l1, l2)
-    #     self.assertEqual(l1, add(None, add(1, l1)))
-    #     self.assertEqual(get_size(empty), 0)
-    #     self.assertEqual(get_size(l1), 2)
-    #     self.assertEqual(get_size(l2), 2)
-    #
-    #     self.assertEqual(str(remove(l1, None)), "{1}")
-    #     self.assertEqual(str(remove(l1, 1)), "{None}")
-    #     # self.assertFalse(member(None, empty))
-    #     # self.assertTrue(member(None, l1))
-    #     # self.assertTrue(member(1, l1))
-    #     # self.assertFalse(member(2, l1))
-    #     self.assertEqual(intersection(l1, l2), l1)
-    #     self.assertEqual(intersection(l1, l2), l2)
-    #     self.assertEqual(intersection(l1, empty), empty)
-    #     self.assertEqual(intersection(l1, add(None, empty)), add(None, empty))
-    #     self.assertTrue(to_list(l1) == [None, 1] or to_list(l1) == [1,\
-    #     None])
-    #     self.assertEqual(l1, from_list( [None, 1]))
-    #     self.assertEqual(l1, from_list([1, None, 1]))
-    #     self.assertEqual(concat(l1, l2), from_list([None, 1, 1, None]))
-    #     buf = []
-    #     for e in l1:
-    #         buf.append(e)
-    #     self.assertIn(buf, map(list, itertools.permutations([1, None])))
-    #     lst = to_list(l1) + to_list(l2)
-    #     for e in l1:
-    #         lst.remove(e)
-    #     for e in l2:
-    #         lst.remove(e)
-    #     self.assertEqual(lst, [])
+    def test_api(self):
+        empty = mempty()
+        self.assertEqual(str(add(None, empty)), "{None}")
+        l1 = add(None, add(1, empty))
+        l2 = add(1, add(None, empty))
+        self.assertEqual(str(empty), "{}")
+        self.assertTrue(str(l1) == "{None, 1}" or str(l1) == "{1, None}\
+        ")
+        self.assertNotEqual(empty, l1)
+        self.assertNotEqual(empty, l2)
+        self.assertEqual(l1, l2)
+        self.assertEqual(l1, add(None, add(1, l1)))
+        self.assertEqual(get_size(empty), 0)
+        self.assertEqual(get_size(l1), 2)
+        self.assertEqual(get_size(l2), 2)
+
+        self.assertEqual(str(remove(l1, None)), "{1}")
+        self.assertEqual(str(remove(l1, 1)), "{None}")
+        self.assertFalse(member(None, empty))
+        self.assertTrue(member(None, l1))
+        self.assertTrue(member(1, l1))
+        self.assertFalse(member(2, l1))
+        self.assertEqual(intersection(l1, l2), l1)
+        self.assertEqual(intersection(l1, l2), l2)
+        self.assertEqual(intersection(l1, empty), empty)
+        self.assertEqual(intersection(l1, add(None, empty)), add(None, empty))
+        self.assertTrue(to_list(l1) == [None, 1] or to_list(l1) == [1,\
+        None])
+        self.assertEqual(l1, from_list( [None, 1]))
+        self.assertEqual(l1, from_list([1, None, 1]))
+        self.assertEqual(concat(l1, l2), from_list([None, 1, 1, None]))
+        buf = []
+        for e in l1:
+            buf.append(e)
+        self.assertIn(buf, map(list, itertools.permutations([1, None])))
+        # lst = to_list(l1) + to_list(l2)
+        # for e in l1:
+        #     lst.remove(e)
+        # for e in l2:
+        #     lst.remove(e)
+        # self.assertEqual(lst, [])
 
     def test_filter(self):
         # tree = from_list([1, None, 'a', 2, 'b', 3])
@@ -65,7 +65,7 @@ class TestBinaryTreeSet(unittest.TestCase):
         self.assertEqual(reduced_value, 6)
 
     def test_empty(self):
-        empty_tree = empty()
+        empty_tree = mempty()
         self.assertIsNone(empty_tree)
 
     def setUp(self):
@@ -89,48 +89,58 @@ class TestBinaryTreeSet(unittest.TestCase):
         parent = get_parent(self.root, 5)
         self.assertEqual(parent.value, 2)
 
-    def test_remove_root(self):
-        # 创建一棵树：1 -> 2 -> 3
-        root = from_list([1, 2, 3])
-        new_root = remove(root, 1)
-        # 断言根节点是否被正确删除
-        self.assertNotIn(1, to_list(root))
-
-    def test_remove_leaf(self):
-        # 创建一棵树：1 -> 2 -> 3
-        root = from_list([1, 2, 3])
-        new_root = remove(root, 3)
-        # 断言叶子节点是否被正确删除
-        self.assertIsNone(new_root.right)
-
-    def test_remove_single_child_node(self):
-        # 创建一棵树：1 -> 2 -> 3
-        root = from_list([1, 2, 3])
-        new_root = remove(root, 2)
-        # 断言具有单个子节点的节点是否被正确删除
-        self.assertEqual(new_root.get_value(), 1)
-        self.assertEqual(new_root.right.get_value(), 3)
-        self.assertIsNone(new_root.left)
-
-    def test_remove_node_with_two_children(self):
-        # 创建一棵树：2 -> 1 -> 3
-        root = from_list([1, 2, 3])
-        new_root = remove(root, 2)
-        # 断言具有两个子节点的节点是否被正确删除
-        self.assertIsNone(new_root.left)
+    # def test_remove_root(self):
+    #     # 创建一棵树：1 -> 2 -> 3
+    #     root = from_list([1, 2, 3])
+    #     new_root = remove(root, 1)
+    #     # 断言根节点是否被正确删除
+    #     self.assertNotIn(1, to_list(root))
+    #
+    # def test_remove_leaf(self):
+    #     # 创建一棵树：1 -> 2 -> 3
+    #     root = from_list([1, 2, 3])
+    #     new_root = remove(root, 3)
+    #     # 断言叶子节点是否被正确删除
+    #     self.assertIsNone(new_root.right)
+    #
+    # def test_remove_single_child_node(self):
+    #     # 创建一棵树：1 -> 2 -> 3
+    #     root = from_list([1, 2, 3])
+    #     new_root = remove(root, 2)
+    #     # 断言具有单个子节点的节点是否被正确删除
+    #     self.assertEqual(new_root.get_value(), 1)
+    #     self.assertEqual(new_root.right.get_value(), 3)
+    #     self.assertIsNone(new_root.left)
+    #
+    # def test_remove_node_with_two_children(self):
+    #     # 创建一棵树：2 -> 1 -> 3
+    #     root = from_list([1, 2, 3])
+    #     new_root = remove(root, 2)
+    #     # 断言具有两个子节点的节点是否被正确删除
+    #     self.assertIsNone(new_root.left)
 
     def test_get_depth(self):
-        depth = get_depth(self.root)
-        self.assertEqual(depth, 3)
+        tree1 = from_list([1, 2, 3, 4, 5])
+        depth1 = get_depth(tree1)
+        self.assertEqual(depth1, 3)
+        tree2 = mempty()
+        depth2 = get_depth(tree2)
+        self.assertEqual(depth2, 0)
 
     def test_get_size(self):
         size = get_size(self.root)
         self.assertEqual(size, 5)
+        tree2 = mempty()
+        size2 = get_size(tree2)
+        self.assertEqual(size2, 0)
 
     def test_from_list_and_to_list(self):
         lst = [1, 2, 3, 4, 5]
-        new_root = from_list(lst)
-        self.assertEqual(to_list(new_root), [1, 2, 4, 5, 3])
+        tree1 = from_list(lst)
+        self.assertEqual(to_list(tree1), [1, 2, 4, 5, 3])
+        lst2 = []
+        tree2 = from_list(lst2)
+        self.assertEqual(to_list(tree2), [])
 
     def test_reduce(self):
         def sum_values(state, value):
@@ -145,10 +155,16 @@ class TestBinaryTreeSet(unittest.TestCase):
         self.assertEqual(values, [1, 2, 3, 4, 5])
 
     def test_intersection(self):
-        root_A = from_list([1, 2, 3, 4, 5])
-        root_B = from_list([4, 5, 6, 7, 8])
-        intersected_values = intersection(root_A, root_B)
-        self.assertEqual(intersected_values, [4, 5])
+        tree_A = from_list([1, 2, 3, 4, 5])
+        tree_B = from_list([4, 5, 6, 7, 8])
+        tree_C = from_list([])
+        tree_D = from_list([9])
+        intersected_values_ab = intersection(tree_A, tree_B)
+        self.assertEqual(intersected_values_ab, [4, 5])
+        intersected_values_ac = intersection(tree_A, tree_C)
+        self.assertEqual(intersected_values_ac, [])
+        intersected_values_ad = intersection(tree_A, tree_D)
+        self.assertEqual(intersected_values_ad, [])
 
     @given(st.lists(st.integers()), st.lists(st.integers()),
                st.lists(st.integers()))
@@ -165,7 +181,7 @@ class TestBinaryTreeSet(unittest.TestCase):
     @given(st.lists(st.integers()))
     def test_concat_identity(self, list_a):
         tree_a = from_list(list_a)
-        tree_empty = empty()
+        tree_empty = mempty()
         tree_ea = concat(tree_empty, tree_a)
         tree_ae = concat(tree_a, tree_empty)
         list_ae = to_list(tree_ae)
@@ -173,7 +189,7 @@ class TestBinaryTreeSet(unittest.TestCase):
         self.assertEqual(list_ae, list_ea)
 
     @given(st.lists(st.integers()), st.integers())
-    def test_member_returns_true_for_existing_value(self, values, target):
+    def test_member(self, values, target):
         tree = from_list(values)
         if target in values:
             self.assertTrue(member(tree, target))

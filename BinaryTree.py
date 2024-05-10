@@ -197,7 +197,7 @@ def reduce(root, function, initial_state=0):
         state = function(state, value)
     return state
 
-def empty():
+def mempty():
     return None
 
 def iterator(root):
