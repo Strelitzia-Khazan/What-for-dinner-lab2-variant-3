@@ -19,13 +19,15 @@ class BinaryTreeNode:
         else:
             return False
 
+
+
 def copy(root):
     if root is None:
         return None
     new_root = BinaryTreeNode(root.value)
     new_root.left = copy(root.left)
     new_root.right = copy(root.right)
-    return new_root 
+    return new_root
 
 def add(root, value):
     add_node = BinaryTreeNode(value)
@@ -124,7 +126,7 @@ def remove(root, value):
                     new_parent = BinaryTreeNode(parent.value)
                     new_parent.right = tmp_next
                     new_root.right = new_parent
-                    
+
                 if new_tmp_pre != new_delete_node:
                     new_tmp_pre.left = tmp_next.right
                     tmp_next.right = new_delete_node.right
@@ -176,7 +178,7 @@ def filter(root):
 def map(root,function):
     if root is None:
         return None
-    
+
     def apply_map(root):
         if root is None:
             return None
@@ -184,7 +186,7 @@ def map(root,function):
         new_node.left = apply_map(root.left)
         new_node.right = apply_map(root.right)
         return new_node
-    
+
     new_root = apply_map(root)
     return new_root
 

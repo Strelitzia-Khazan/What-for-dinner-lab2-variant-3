@@ -1,12 +1,13 @@
 import itertools
 import unittest
-from hypothesis import given,  strategies
+from hypothesis import given
 from BinaryTree import *
+from hypothesis import strategies as st
 
 
 class TestBinaryTreeSet(unittest.TestCase):
     # def test_api(self):
-    #     empty = BinaryTreeNode()
+    #     empty = BinaryTreeSet()
     #     self.assertEqual(str(add(None, empty)), "{None}")
     #     l1 = add(None, add(1, empty))
     #     l2 = add(1, add(None, empty))
@@ -67,9 +68,6 @@ class TestBinaryTreeSet(unittest.TestCase):
         empty_tree = empty()
         self.assertIsNone(empty_tree)
 
-
-
-
     def setUp(self):
         # 创建一棵简单的二叉树进行测试
         self.root = BinaryTreeNode(1)
@@ -91,9 +89,36 @@ class TestBinaryTreeSet(unittest.TestCase):
         parent = get_parent(self.root, 5)
         self.assertEqual(parent.value, 2)
 
-    def test_remove(self):
-        new_root = remove(self.root, 2)
+    def test_remove_root(self):
+        # 创建一棵树：1 -> 2 -> 3
+        root = from_list([1, 2, 3])
+        new_root = remove(root, 1)
+        # 断言根节点是否被正确删除
+        self.assertEqual(new_root.get_value(), 2)
+
+    def test_remove_leaf(self):
+        # 创建一棵树：1 -> 2 -> 3
+        root = from_list([1, 2, 3])
+        new_root = remove(root, 3)
+        # 断言叶子节点是否被正确删除
+        self.assertIsNone(new_root.right)
+
+    def test_remove_single_child_node(self):
+        # 创建一棵树：1 -> 2 -> 3
+        root = from_list([1, 2, 3])
+        new_root = remove(root, 2)
+        # 断言具有单个子节点的节点是否被正确删除
+        self.assertEqual(new_root.get_value(), 1)
+        self.assertEqual(new_root.right.get_value(), 3)
         self.assertIsNone(new_root.left)
+
+    def test_remove_node_with_two_children(self):
+        # 创建一棵树：2 -> 1 -> 3
+        root = from_list([2, 1, 3])
+        new_root = remove(root, 2)
+        # 断言具有两个子节点的节点是否被正确删除
+        self.assertEqual(new_root.get_value(), 3)
+        self.assertEqual(new_root.left.get_value(), 1)
 
     def test_get_depth(self):
         depth = get_depth(self.root)
@@ -120,17 +145,32 @@ class TestBinaryTreeSet(unittest.TestCase):
         values = [iterator_func() for _ in range(get_size(self.root))]
         self.assertEqual(values, [1, 2, 3, 4, 5])
 
-    def test_concat(self):
-        root_A = BinaryTreeNode(1, BinaryTreeNode(2), BinaryTreeNode(3))
-        root_B = BinaryTreeNode(4, BinaryTreeNode(5), BinaryTreeNode(6))
-        new_root = concat(root_A, root_B)
-        self.assertEqual(to_list(new_root), [5, 7, 9])
-
     def test_intersection(self):
         root_A = from_list([1, 2, 3, 4, 5])
         root_B = from_list([4, 5, 6, 7, 8])
         intersected_values = intersection(root_A, root_B)
         self.assertEqual(intersected_values, [4, 5])
 
+    @given(st.lists(st.integers()), st.lists(st.integers()),
+               st.lists(st.integers()))
+    def test_concat_associativity(self, list_a, list_b, list_c):
+        tree_a = from_list(list_a)
+        tree_b = from_list(list_b)
+        tree_c = from_list(list_c)
+        tree_ab = concat(tree_a, tree_b)
+        tree_ab_c = concat(tree_ab, tree_c)
+        tree_bc = concat(tree_b, tree_c)
+        tree_a_bc = concat(tree_a, tree_bc)
+        self.assertEqual(to_list(tree_a_bc), to_list(tree_ab_c))
+
+        @given(st.lists(st.integers()))
+        def test_concat_identity(self, list_a):
+            tree_a = from_list(list_a)
+            tree_empty = empty()
+            tree_ea = concat(tree_empty, tree_a)
+            tree_ae = concat(tree_a, tree_empty)
+            list_ae = to_list(tree_ae)
+            list_ea = to_list(tree_ea)
+            self.assertEqual(list_ae, list_ea)
 
 
