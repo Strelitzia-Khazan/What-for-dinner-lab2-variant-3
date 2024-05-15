@@ -210,7 +210,7 @@ def reduce(root, function, initial_state=0):
     return state
 
 def mempty():
-    return {None}
+    return None
 
 def iterator(root):
     if root is None:
