@@ -31,10 +31,10 @@ def copy(root):
     return new_root
 
 def add(value, root):
-    if root is None and value is None:
-        return None
-    # if root.value is None and value is None:
+    # if root is None and value is None:
     #     return None
+    # if root.value is None:
+    #     return BinaryTreeNode()
     add_node = BinaryTreeNode(value)
     if root is None:
         return add_node
@@ -68,14 +68,14 @@ def get_parent(root, value):
             node_queue.append(node.right)
     return None
 
-def find_leaf_node(root, node):
+def find_leaf_node(root):
     if root is None:
         return None
     stack = [root]
     while stack:
         current_node = stack.pop()
         # If the current node is a leaf node and not the input node's child
-        if current_node.left is None and current_node.right is None and current_node != node.left and current_node != node.right:
+        if current_node.left is None and current_node.right is None:
             return current_node
         # Push the right child first to ensure left child is visited first
         if current_node.right:
@@ -111,7 +111,7 @@ def remove(root, value):
             else:  # left and right all are not None
                 leaf_node = find_leaf_node(delete_node)
                 alternative_node = leaf_node
-                leaf_node_parent = get_parent(root, leaf_node)
+                leaf_node_parent = get_parent(root, leaf_node.value)
                 if leaf_node_parent.left.value == leaf_node.value:
                     leaf_node_parent.left = None
                 else:
@@ -129,22 +129,22 @@ def remove(root, value):
         if root.value == value:
             delete_node = new_root
             leaf_node = find_leaf_node(delete_node)
-            new_root = leaf_node
-            leaf_node_parent = get_parent(root, leaf_node)
+            result_root = BinaryTreeNode(leaf_node.value)
+            leaf_node_parent = get_parent(new_root, leaf_node.value)
             if leaf_node_parent.left.value == leaf_node.value:
                 leaf_node_parent.left = None
             else:
-                leaf_node_parent.left = None
-            new_root.left = root.left
-            new_root.right = root.right
-            return new_root
+                leaf_node_parent.right = None
+            result_root.left = new_root.left
+            result_root.right = new_root.right
+            return result_root
         else:
             return root
         
 def to_set(root):
     # if root is None or root.value is None:
     if root.value is None:
-        return set()
+        return {None}
     result_set = {root.value}
     left_set = to_set(root.left)
     right_set = to_set(root.right)
@@ -180,7 +180,12 @@ def from_list(lst):
         root = add(value, root)
     return root
 
-def filter(root,function):
+def find(root, function):
+    find_list = to_list(root)
+    result_list = function(find_list)
+    return result_list
+
+def filter(root, function):
     filter_list = to_list(root)
     result_list = function(filter_list)
     return result_list
