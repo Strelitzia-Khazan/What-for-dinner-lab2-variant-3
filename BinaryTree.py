@@ -33,6 +33,8 @@ def copy(root):
 def add(value, root):
     if root is None and value is None:
         return None
+    # if root.value is None and value is None:
+    #     return None
     add_node = BinaryTreeNode(value)
     if root is None:
         return add_node
@@ -140,8 +142,9 @@ def remove(root, value):
             return root
         
 def to_set(root):
-    if root is None or root.value is None:
-        return set()
+    # if root is None or root.value is None:
+    if root.value is None:
+        return {}
     result_set = {root.value}
     left_set = to_set(root.left)
     right_set = to_set(root.right)
@@ -174,7 +177,7 @@ def get_size(node):
 def from_list(lst):
     root = None
     for value in lst:
-        root = add(root, value)
+        root = add(value, root)
     return root
 
 def filter(root,function):
@@ -210,7 +213,7 @@ def reduce(root, function, initial_state=0):
     return state
 
 def mempty():
-    return None
+    return BinaryTreeNode()
 
 def iterator(root):
     if root is None:
