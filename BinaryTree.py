@@ -144,7 +144,7 @@ def remove(root, value):
 def to_set(root):
     # if root is None or root.value is None:
     if root.value is None:
-        return {}
+        return set()
     result_set = {root.value}
     left_set = to_set(root.left)
     right_set = to_set(root.right)
