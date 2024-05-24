@@ -299,8 +299,6 @@ def to_set(node: Optional[BinaryTreeNode[ValueType]]) -> set:
 def mempty() -> Optional[BinaryTreeNode[ValueType]]:
     return None
 
-
-
 def add(value: ValueType, root: Optional[BinaryTreeNode[ValueType]]) -> BinaryTreeNode[ValueType]:
     add_node = BinaryTreeNode(value)
     if root is None:
@@ -461,15 +459,40 @@ def from_list(lst: List[ValueType]) -> Optional[BinaryTreeNode[ValueType]]:
     return root
 
 
-def concat(root_A, root_B):
+# def concat(root_A, root_B):
+#     if root_A is None:
+#         return root_B
+#     if root_B is None:
+#         return root_A
+#     set_A = to_list(root_A)
+#     set_B = to_list(root_B)
+#     new_list = set_A + set_B
+#     new_root = from_list(new_list)
+#     return new_root
+
+def concat(root_A: Optional[BinaryTreeNode[ValueType]], root_B: Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[ValueType]]:
     if root_A is None:
         return root_B
     if root_B is None:
         return root_A
-    list_A = to_list(root_A)
-    list_B = to_list(root_B)
-    new_list = list_A + list_B
-    new_root = from_list(new_list)
+    
+    def level_order_traversal(root :Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[ValueType]]:
+        level_order_list = []
+        level_order_queue = [root]
+        while level_order_queue:
+            node = level_order_queue.pop(0)
+            level_order_list.append(node)
+
+            if node.left:
+                level_order_queue.append(node.left)
+            if node.right:
+                level_order_queue.append(node.right)
+        return level_order_list
+    
+    new_root = copy(root_A)
+    new_node_list = level_order_traversal(root_B)
+    for value in new_node_list:
+        new_root = add(value, new_root)
     return new_root
 
 
@@ -524,3 +547,25 @@ def get_depth(node):
 #     filter_list = to_list(root)
 #     result_list = function(filter_list)
 #     return result_list
+
+def filter(root: Optional[BinaryTreeNode[ValueType]], f: Callable[[ValueType], bool]) -> set[ValueType]:
+    result_set: set[ValueType] = set()
+    if root is None:
+        result_set.update(filter(root.left, f))
+        if f(root.value):
+            result_set.add(root.value)
+        result_set.update(filter(root.right, f))
+    return result_set
+
+def tmap(root,function):
+    if root is None:
+        return None
+    def apply_map(root):
+        if root is None:
+            return None
+        new_node = BinaryTreeNode(function(root.value))
+        new_node.left = apply_map(root.left)
+        new_node.right = apply_map(root.right)
+        return new_node
+    new_root = apply_map(root)
+    return new_root

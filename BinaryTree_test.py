@@ -56,10 +56,10 @@ class TestBinaryTreeSet(unittest.TestCase):
 #     #     filtered_tree_list = filter(tree)
 #     #     self.assertEqual(filtered_tree_list, [1, 3, 2])
 #     #
-#     def test_map(self):
-#         tree = from_list([1, 2, 3])
-#         mapped_tree = map(tree, lambda x: x * 2)
-#         self.assertEqual(to_list(mapped_tree), [2, 4, 6])
+    def test_map(self):
+        tree = from_list([1, 2, 3])
+        mapped_tree = tmap(tree, lambda x: x * 2)
+        self.assertEqual(to_list(mapped_tree), [2, 4, 6])
 #
     def test_reduce(self):
         tree = from_list([1, 2, 3])
@@ -191,13 +191,13 @@ class TestBinaryTreeSet(unittest.TestCase):
         list_ea = to_list(tree_ea)
         self.assertEqual(list_ae, list_ea)
 
-    # @given(st.lists(st.integers()), st.integers())
-    # def test_member(self, values, target):
-    #     tree = from_list(values)
-    #     if target in values:
-    #         self.assertTrue(member(tree, target))
-    #     else:
-    #         self.assertFalse(member(tree, target))
+    @given(st.lists(st.integers()), st.integers())
+    def test_member(self, values, target):
+        tree = from_list(values)
+        if target in values:
+            self.assertTrue(member(target, tree))
+        else:
+            self.assertFalse(member(target, tree))
 
 
 
