@@ -344,8 +344,6 @@ def get_size(node):
 def remove(root, value):
     if root is None:
         return None
-    if value is None:
-        return root
     new_root = copy(root)
     parent = get_parent(root, value)
     new_parent = get_parent(new_root, value)
@@ -448,13 +446,13 @@ def to_list(root):
 def intersection(root_A, root_B):
     if root_A is None or root_B is None:
         return None
-    list_A = to_list(root_A)
-    list_B = to_list(root_B)
-    result_list = []
+    list_A = to_set(root_A)
+    list_B = to_set(root_B)
+    result_set = set()
     for value in list_A:
         if value in list_B:
-            result_list.append(value)
-    return result_list
+            result_set.add(value)
+    return result_set
 
 def from_list(lst: List[ValueType]) -> Optional[BinaryTreeNode[ValueType]]:
     root = None
