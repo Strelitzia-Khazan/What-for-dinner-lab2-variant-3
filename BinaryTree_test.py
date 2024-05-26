@@ -1,7 +1,10 @@
 import itertools
 import unittest
 from hypothesis import given
-from BinaryTree import *
+from BinaryTree import BinaryTreeNode, from_list, remove, member, to_list, \
+    mempty, add, to_set, get_size, intersection, concat, iterator, reduce, \
+    tmap, get_parent, get_depth, copy
+
 from hypothesis import strategies as st
 
 
