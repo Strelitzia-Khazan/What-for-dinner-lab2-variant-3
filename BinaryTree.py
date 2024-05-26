@@ -206,7 +206,8 @@ def from_list(lst: List[ValueType]) -> Optional[BinaryTreeNode[ValueType]]:
 # Using level-order traversal in concat() can comply with the monoid group
 # when implementing the function.
 def concat(root_A: Optional[BinaryTreeNode[ValueType]],
-           root_B: Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[ValueType]]:
+           root_B: Optional[BinaryTreeNode[ValueType]]) \
+        -> Optional[BinaryTreeNode[ValueType]]:
     if root_A is None:
         return root_B
     if root_B is None:
