@@ -3,7 +3,7 @@ import unittest
 from hypothesis import given
 from BinaryTree import BinaryTreeNode, from_list, remove, member, to_list, \
     mempty, add, to_set, get_size, intersection, concat, iterator, reduce, \
-    tmap, get_parent, get_depth, copy, filter
+    tmap, get_parent, get_depth, copy, tfilter
 
 from hypothesis import strategies as st
 
@@ -169,17 +169,17 @@ class TestBinaryTreeSet(unittest.TestCase):
         else:
             self.assertFalse(member(target, tree))
 
-    def test_filter(self):
+    def test_tfilter(self):
         tree = from_list([1, "a", 2, 3.5, None])
         self.assertEqual(
-            filter(tree, lambda value: isinstance(value, int)),
+            tfilter(tree, lambda value: isinstance(value, int)),
             set([1, 2])
         )
         self.assertEqual(
-            filter(tree, lambda value: isinstance(value, float)),
+            tfilter(tree, lambda value: isinstance(value, float)),
             set([3.5])
         )
         self.assertEqual(
-            filter(tree, lambda value: isinstance(value, str)),
+            tfilter(tree, lambda value: isinstance(value, str)),
             set(["a"])
         )
