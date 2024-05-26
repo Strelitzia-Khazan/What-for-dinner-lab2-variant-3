@@ -29,7 +29,8 @@ class TestBinaryTreeSet(unittest.TestCase):
         self.assertEqual(intersection(l1, l2), to_set(l1))
         self.assertEqual(intersection(l1, l2), to_set(l2))
         self.assertEqual(intersection(l1, empty), empty)
-        self.assertEqual(intersection(l1, add(None, empty)), to_set(add(None, empty)))
+        self.assertEqual(intersection(l1, add(None, empty)),
+                         to_set(add(None, empty)))
         self.assertTrue(to_list(l1) == [None, 1] or to_list(l1) == [1, None])
         self.assertEqual(l1, from_list([None, 1]))
         self.assertEqual(l1, from_list([1, None, 1]))
@@ -143,7 +144,7 @@ class TestBinaryTreeSet(unittest.TestCase):
         self.assertEqual(intersected_values_ad, set())
 
     @given(st.lists(st.integers()), st.lists(st.integers()),
-               st.lists(st.integers()))
+           st.lists(st.integers()))
     def test_concat_associativity(self, list_a, list_b, list_c):
         tree_a = from_list(list_a)
         tree_b = from_list(list_b)
