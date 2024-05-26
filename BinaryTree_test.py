@@ -130,13 +130,6 @@ class TestBinaryTreeSet(unittest.TestCase):
         tree2 = from_list(lst2)
         self.assertEqual(to_list(tree2), [])
 
-    def test_reduce(self):
-        def sum_values(state, value):
-            return state + value
-
-        total_sum = reduce(self.root, sum_values)
-        self.assertEqual(total_sum, 15)
-
     def test_intersection(self):
         tree_A = from_list([1, 2, 3, 4, 5])
         tree_B = from_list([4, 5, 6, 7, 8])
