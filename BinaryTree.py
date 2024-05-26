@@ -265,7 +265,7 @@ def get_depth(node):
 
 
 def tfilter(root: Optional[BinaryTreeNode[ValueType]],
-           f: Callable[[ValueType], bool]) -> set[ValueType]:
+            f: Callable[[ValueType], bool]) -> set[ValueType]:
     result_set: set[ValueType] = set()
     if root is not None:
         result_set.update(tfilter(root.left, f))
