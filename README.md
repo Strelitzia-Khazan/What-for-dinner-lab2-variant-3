@@ -60,15 +60,15 @@ enough for educational purposes.
    - In immutable programming, all objects cannot be changed after they are created,
      and each change requires the generation of a new data structure.
    - Therefore, the copy() function is used repeatedly in the code to build a new
-     datastructure based on the original data structure to ensure that
+     data structure based on the original data structure to ensure that
      the original structure will not change.
 - Find possible implementation errors, which can pass property-based tests:
    - When implementing a Binary Tree based set,
      special conditions are sometimes overlooked.
-   - For example, if the implemented function fails to handle empty inputs.
-   - Due to the nature of property-based testing (PBT),
+     For example, if the implemented function fails to handle empty inputs.
+     Due to the nature of property-based testing (PBT),
      automatically generated inputs may not include empty inputs.
-   - Consequently, the test may pass, giving the impression
+     Consequently, the test may pass, giving the impression
      that the function is problem-free.
-   - However, when we manually introduce marginal conditions
+     However, when we manually introduce marginal conditions
      such as empty lists or empty trees, the test will fail.
