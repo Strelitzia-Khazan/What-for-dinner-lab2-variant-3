@@ -362,18 +362,18 @@ def remove(root, value):
                     new_parent.right = delete_node.left
             else:  # left and right all are not None
                 leaf_node = find_leaf_node(delete_node)
-                alternative_node = leaf_node
-                leaf_node_parent = get_parent(root, leaf_node.value)
+                added_root = BinaryTreeNode(leaf_node.value)
+                leaf_node_parent = get_parent(new_root, leaf_node.value)
                 if leaf_node_parent.left.value == leaf_node.value:
                     leaf_node_parent.left = None
                 else:
                     leaf_node_parent.left = None
-                alternative_node.left = delete_node.left
-                alternative_node.right = delete_node.right
+                added_root.left = delete_node.left
+                added_root.right = delete_node.right
                 if parent.left.value == value:
-                    parent.left = alternative_node
+                    new_parent.left = added_root
                 else:
-                    parent.right = alternative_node
+                    new_parent.right = added_root
             return new_root
         else:
             return root
@@ -531,7 +531,7 @@ def get_depth(node):
 
 def filter(root: Optional[BinaryTreeNode[ValueType]], f: Callable[[ValueType], bool]) -> set[ValueType]:
     result_set: set[ValueType] = set()
-    if root is None:
+    if root is not None:
         result_set.update(filter(root.left, f))
         if f(root.value):
             result_set.add(root.value)
