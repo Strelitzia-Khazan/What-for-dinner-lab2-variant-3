@@ -16,13 +16,17 @@ enough for educational purposes.
 
 ## Contribution
 
-- Lu Bin (1476683166@qq.com) -- BinaryTree.py.
-- Wang Yining (351432511@qq.com) -- BinaryTree_test.py.
+- Lu Bin (1476683166@qq.com) -- All work.
+- Wang Yining (351432511@qq.com) -- All work.
 
 ## Changelog
-
-
-- 05.05.2024 - 2
+- 24.05.2024 - 6
+  - fix bugs in code.
+- 17.05.2024 - 5
+  - fix bugs in code.
+- 10.05.2024 - 4
+  - Implement PBT test.
+- 05.05.2024 - 3
   - Implement unit test.
 - 29.03.2022 - 2
   - Add test coverage.
@@ -33,4 +37,8 @@ enough for educational purposes.
 
 ## Design notes
 
-- ...
+- 3. When implementing a Binary Tree based set, special conditions are sometimes overlooked. 
+    For example, if the implemented function fails to handle empty inputs. 
+    Due to the nature of property-based testing (PBT), automatically generated inputs may not include empty inputs. 
+    Consequently, the test may pass, giving the impression that the function is problem-free. 
+    However, when we manually introduce marginal conditions such as empty lists or empty trees, the test will fail.

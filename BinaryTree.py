@@ -272,6 +272,7 @@ from typing import Optional, Callable, Generator, List, Any, Union, TypeVar, Gen
 
 ValueType = TypeVar('ValueType', bound=Union[int, str, float, None])
 
+
 class BinaryTreeNode(Generic[ValueType]):
     def __init__(self, value: ValueType, left: Optional['BinaryTreeNode[ValueType]'] = None,
                  right: Optional['BinaryTreeNode[ValueType]'] = None) -> None:
@@ -328,8 +329,6 @@ def copy(root: Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[V
     new_root.left = copy(root.left)
     new_root.right = copy(root.right)
     return new_root
-
-
 
 def get_size(node):
     if node is None:
@@ -458,30 +457,18 @@ def from_list(lst: List[ValueType]) -> Optional[BinaryTreeNode[ValueType]]:
         root = add(value, root)
     return root
 
-
-# def concat(root_A, root_B):
-#     if root_A is None:
-#         return root_B
-#     if root_B is None:
-#         return root_A
-#     set_A = to_list(root_A)
-#     set_B = to_list(root_B)
-#     new_list = set_A + set_B
-#     new_root = from_list(new_list)
-#     return new_root
-
 def concat(root_A: Optional[BinaryTreeNode[ValueType]], root_B: Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[ValueType]]:
     if root_A is None:
         return root_B
     if root_B is None:
         return root_A
     
-    def level_order_traversal(root :Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[ValueType]]:
+    def level_order_traversal(root: Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[ValueType]]:
         level_order_list = []
         level_order_queue = [root]
         while level_order_queue:
             node = level_order_queue.pop(0)
-            level_order_list.append(node)
+            level_order_list.append(node.value)
 
             if node.left:
                 level_order_queue.append(node.left)
@@ -541,12 +528,6 @@ def get_depth(node):
     left_depth = get_depth(node.left)
     right_depth = get_depth(node.right)
     return depth + max(left_depth, right_depth)
-
-
-# def filter(root, function):
-#     filter_list = to_list(root)
-#     result_list = function(filter_list)
-#     return result_list
 
 def filter(root: Optional[BinaryTreeNode[ValueType]], f: Callable[[ValueType], bool]) -> set[ValueType]:
     result_set: set[ValueType] = set()
