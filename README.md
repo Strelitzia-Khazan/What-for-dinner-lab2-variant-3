@@ -23,10 +23,11 @@ enough for educational purposes.
 
 - 26.05.2024 - 7
   - Update README.
+  - Fix bugs in code.
 - 24.05.2024 - 6
-  - fix bugs in code.
+  - Fix bugs in code.
 - 17.05.2024 - 5
-  - fix bugs in code.
+  - Fix bugs in code.
 - 10.05.2024 - 4
   - Implement PBT test.
 - 05.05.2024 - 3
@@ -36,13 +37,14 @@ enough for educational purposes.
 - 29.03.2022 - 1
   - Update README.
 - 29.05.2024 - 0
-  - Initial
+  - Initial.
 
 ## Design notes
 
 - Compare mutable and immutable implementation:
-  - Variable programming allows the value of variables to change while the code is running,
-    making programming more intuitive and achieving higher performance.
+  - Variable programming allows the value of variables to change
+    while the code is running,making programming more intuitive
+    and achieving higher performance.
   - However, in a multi-threaded or concurrent environment,
     variable states can easily lead to race conditions and data inconsistency issues.
   - In immutable programming, once a variable is assigned a value,
@@ -51,15 +53,22 @@ enough for educational purposes.
     and there is no need to worry about data race conditions.
   - However, every time the data is modified, a new copy will be created,
     which may cause more memory consumption and garbage collection pressure.
-  - At the same time, it is necessary to change the programming idea when programming, which is more cumbersome.
+  - At the same time, 
+    it is necessary to change the programming idea when programming, 
+    which is more cumbersome.
 - Note implementation restriction:
   - In immutable programming, all objects cannot be changed after they are created,
     and each change requires the generation of a new data structure.
-  - Therefore, the copy() function is used repeatedly in the code to build a new data
-    structure based on the original data structure to ensure that the original structure will not change.
+  - Therefore, the copy() function is used repeatedly in the code to build a new
+    datastructure based on the original data structure to ensure that
+    the original structure will not change.
 - Find possible implementation errors, which can pass property-based tests:
-  - When implementing a Binary Tree based set, special conditions are sometimes overlooked.
+  - When implementing a Binary Tree based set,
+    special conditions are sometimes overlooked.
   - For example, if the implemented function fails to handle empty inputs.
-  - Due to the nature of property-based testing (PBT), automatically generated inputs may not include empty inputs.
-  - Consequently, the test may pass, giving the impression that the function is problem-free.
-  - However, when we manually introduce marginal conditions such as empty lists or empty trees, the test will fail.
+  - Due to the nature of property-based testing (PBT),
+    automatically generated inputs may not include empty inputs.
+  - Consequently, the test may pass, giving the impression
+    that the function is problem-free.
+  - However, when we manually introduce marginal conditions
+    such as empty lists or empty trees, the test will fail.
