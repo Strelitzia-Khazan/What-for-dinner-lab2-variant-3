@@ -1,9 +1,11 @@
-from typing import Optional, Callable, Generator, List, Any, Union, TypeVar, Generic, Tuple, Iterator
+from typing import Optional, Callable, List, Union, TypeVar, Generic
 
 ValueType = TypeVar('ValueType', bound=Union[int, str, float, None])
 
+
 class BinaryTreeNode(Generic[ValueType]):
-    def __init__(self, value: ValueType, left: Optional['BinaryTreeNode[ValueType]'] = None,
+    def __init__(self, value: ValueType,
+                 left: Optional['BinaryTreeNode[ValueType]'] = None,
                  right: Optional['BinaryTreeNode[ValueType]'] = None) -> None:
         self.value = value
         self.left = left
@@ -20,13 +22,16 @@ class BinaryTreeNode(Generic[ValueType]):
     def get_value(self):
         return self.value
 
+
 def to_set(node: Optional[BinaryTreeNode[ValueType]]) -> set:
     if node is None:
         return set()
     return to_set(node.left).union({node.value}, to_set(node.right))
 
+
 def mempty() -> Optional[BinaryTreeNode[ValueType]]:
     return None
+
 
 def add(value: ValueType, root: Optional[BinaryTreeNode[ValueType]]) -> BinaryTreeNode[ValueType]:
     add_node = BinaryTreeNode(value)
@@ -48,7 +53,8 @@ def add(value: ValueType, root: Optional[BinaryTreeNode[ValueType]]) -> BinaryTr
             return new_root
     return new_root
 
-#Auxiliary function for copying binary trees
+
+# Auxiliary function for copying binary trees
 def copy(root: Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[ValueType]]:
     if root is None:
         return None
@@ -57,6 +63,7 @@ def copy(root: Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[V
     new_root.right = copy(root.right)
     return new_root
 
+
 def get_size(node):
     if node is None:
         return 0
@@ -64,6 +71,7 @@ def get_size(node):
     left_size = get_size(node.left)
     right_size = get_size(node.right)
     return size + left_size + right_size
+
 
 def remove(root, value):
     if root is None:
@@ -87,7 +95,7 @@ def remove(root, value):
                     new_parent.left = delete_node.left
                 else:
                     new_parent.right = delete_node.left
-            else:  
+            else:
                 # left and right all are not None
                 leaf_node = find_leaf_node(delete_node)
                 added_root = BinaryTreeNode(leaf_node.value)
@@ -122,6 +130,7 @@ def remove(root, value):
         else:
             return root
 
+
 def get_parent(root, value):
     if root is None or root.value == value:
         return None
@@ -135,6 +144,7 @@ def get_parent(root, value):
         if node.right:
             node_queue.append(node.right)
     return None
+
 
 def find_leaf_node(root):
     if root is None:
@@ -152,12 +162,14 @@ def find_leaf_node(root):
             stack.append(current_node.left)
     return None
 
+
 def member(value, root):
     list = to_list(root)
     if value in list:
         return True
     else:
         return False
+
 
 # Convert tree to list using preorder traversal
 def to_list(root):
@@ -167,6 +179,7 @@ def to_list(root):
     left_list = to_list(root.left)
     right_list = to_list(root.right)
     return result_list + left_list + right_list
+
 
 def intersection(root_A, root_B):
     if root_A is None or root_B is None:
@@ -179,11 +192,13 @@ def intersection(root_A, root_B):
             result_set.add(value)
     return result_set
 
+
 def from_list(lst: List[ValueType]) -> Optional[BinaryTreeNode[ValueType]]:
     root = None
     for value in lst:
         root = add(value, root)
     return root
+
 
 # Using level-order traversal in concat() can comply with the monoid group when implementing the function.
 def concat(root_A: Optional[BinaryTreeNode[ValueType]], root_B: Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[ValueType]]:
@@ -211,6 +226,7 @@ def concat(root_A: Optional[BinaryTreeNode[ValueType]], root_B: Optional[BinaryT
         new_root = add(value, new_root)
     return new_root
 
+
 def iterator(root: Optional[BinaryTreeNode[ValueType]]):
     if root is None:
         return
@@ -223,12 +239,14 @@ def iterator(root: Optional[BinaryTreeNode[ValueType]]):
         if current_node.right is not None:
             node_queue.append(current_node.right)
 
+
 def reduce(root, function, initial_state=0):
     state = initial_state
     result_list = to_list(root)
     for value in result_list:
         state = function(state, value)
     return state
+
 
 def get_depth(node):
     if node is None:
@@ -237,6 +255,7 @@ def get_depth(node):
     left_depth = get_depth(node.left)
     right_depth = get_depth(node.right)
     return depth + max(left_depth, right_depth)
+
 
 def filter(root: Optional[BinaryTreeNode[ValueType]], f: Callable[[ValueType], bool]) -> set[ValueType]:
     result_set: set[ValueType] = set()
@@ -247,9 +266,11 @@ def filter(root: Optional[BinaryTreeNode[ValueType]], f: Callable[[ValueType], b
         result_set.update(filter(root.right, f))
     return result_set
 
+
 def tmap(root,function):
     if root is None:
         return None
+
     def apply_map(root):
         if root is None:
             return None
