@@ -178,7 +178,6 @@ class TestBinaryTreeSet(unittest.TestCase):
 
     def test_filter(self):
         tree = from_list([1, "a", 2, 3.5, None])
-        print("tree:", filter(tree, lambda value: isinstance(value, int)))
         self.assertEqual(
             filter(tree, lambda value: isinstance(value, int)),
             set([1, 2])
