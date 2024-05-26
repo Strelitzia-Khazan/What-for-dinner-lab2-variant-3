@@ -34,7 +34,7 @@ def mempty() -> Optional[BinaryTreeNode[ValueType]]:
 
 
 def add(value: ValueType, root: Optional[BinaryTreeNode[ValueType]]) \
-        -> BinaryTreeNode[ValueType]:
+        -> Optional[BinaryTreeNode[ValueType]]:
     add_node = BinaryTreeNode(value)
     if root is None:
         return add_node
@@ -42,6 +42,8 @@ def add(value: ValueType, root: Optional[BinaryTreeNode[ValueType]]) \
     node_queue = [new_root]
     while node_queue:
         node = node_queue.pop(0)
+        if node is None:
+            return new_root
         if node.left:
             node_queue.append(node.left)
         else:
@@ -214,17 +216,22 @@ def concat(root_A: Optional[BinaryTreeNode[ValueType]],
         return root_A
 
     def level_order_traversal(root: Optional[BinaryTreeNode[ValueType]]) \
-            -> Optional[BinaryTreeNode[ValueType]]:
+            -> list[ValueType]:
         level_order_list = []
         level_order_queue = [root]
         while level_order_queue:
-            node = level_order_queue.pop(0)
-            level_order_list.append(node.value)
-
-            if node.left:
-                level_order_queue.append(node.left)
-            if node.right:
-                level_order_queue.append(node.right)
+            level_size = len(level_order_queue)
+            current_level = []
+            for _ in range(level_size):
+                node = level_order_queue.pop(0)
+                if node:
+                    current_level.append(node.value)
+                    if node.left:
+                        level_order_queue.append(node.left)
+                    if node.right:
+                        level_order_queue.append(node.right)
+                else:
+                    continue
         return level_order_list
 
     new_root = copy(root_A)
