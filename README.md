@@ -20,6 +20,7 @@ enough for educational purposes.
 - Wang Yining (351432511@qq.com) -- All work.
 
 ## Changelog
+
 - 26.05.2024 - 7
   - Update README.
 - 24.05.2024 - 6
@@ -38,25 +39,27 @@ enough for educational purposes.
   - Initial
 
 ## Design notes
-- 1. Variable programming allows the value of variables to change while the code is running, 
-    making programming more intuitive and achieving higher performance. However, 
-    in a multi-threaded or concurrent environment, 
+
+- Compare mutable and immutable implementation:
+  - Variable programming allows the value of variables to change while the code is running,
+    making programming more intuitive and achieving higher performance.
+  - However, in a multi-threaded or concurrent environment,
     variable states can easily lead to race conditions and data inconsistency issues.
-    In immutable programming, once a variable is assigned a value, 
-    it cannot be changed. Each modification requires a new data structure, 
-    which is more suitable for multi-threaded or concurrent environments, 
-    and there is no need to worry about data race conditions. 
-    However, every time the data is modified, a new copy will be created, 
-    which may cause more memory consumption and garbage collection pressure. 
-    At the same time, it is necessary to change the programming idea when programming, which is more cumbersome.
-
-- 2. In immutable programming, all objects cannot be changed after they are created, 
-    and each change requires the generation of a new data structure. 
-    Therefore, the copy() function is used repeatedly in the code to build a new data 
+  - In immutable programming, once a variable is assigned a value,
+    it cannot be changed. Each modification requires a new data structure,
+    which is more suitable for multi-threaded or concurrent environments,
+    and there is no need to worry about data race conditions.
+  - However, every time the data is modified, a new copy will be created,
+    which may cause more memory consumption and garbage collection pressure.
+  - At the same time, it is necessary to change the programming idea when programming, which is more cumbersome.
+- Note implementation restriction:
+  - In immutable programming, all objects cannot be changed after they are created,
+    and each change requires the generation of a new data structure.
+  - Therefore, the copy() function is used repeatedly in the code to build a new data
     structure based on the original data structure to ensure that the original structure will not change.
-
-- 3. When implementing a Binary Tree based set, special conditions are sometimes overlooked. 
-    For example, if the implemented function fails to handle empty inputs. 
-    Due to the nature of property-based testing (PBT), automatically generated inputs may not include empty inputs. 
-    Consequently, the test may pass, giving the impression that the function is problem-free. 
-    However, when we manually introduce marginal conditions such as empty lists or empty trees, the test will fail.
+- Find possible implementation errors, which can pass property-based tests:
+  - When implementing a Binary Tree based set, special conditions are sometimes overlooked.
+  - For example, if the implemented function fails to handle empty inputs.
+  - Due to the nature of property-based testing (PBT), automatically generated inputs may not include empty inputs.
+  - Consequently, the test may pass, giving the impression that the function is problem-free.
+  - However, when we manually introduce marginal conditions such as empty lists or empty trees, the test will fail.
