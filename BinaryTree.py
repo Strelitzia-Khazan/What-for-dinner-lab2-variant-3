@@ -33,7 +33,8 @@ def mempty() -> Optional[BinaryTreeNode[ValueType]]:
     return None
 
 
-def add(value: ValueType, root: Optional[BinaryTreeNode[ValueType]]) -> BinaryTreeNode[ValueType]:
+def add(value: ValueType, root: Optional[BinaryTreeNode[ValueType]]) \
+        -> BinaryTreeNode[ValueType]:
     add_node = BinaryTreeNode(value)
     if root is None:
         return add_node
@@ -55,7 +56,8 @@ def add(value: ValueType, root: Optional[BinaryTreeNode[ValueType]]) -> BinaryTr
 
 
 # Auxiliary function for copying binary trees
-def copy(root: Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[ValueType]]:
+def copy(root: Optional[BinaryTreeNode[ValueType]]) \
+        -> Optional[BinaryTreeNode[ValueType]]:
     if root is None:
         return None
     new_root = BinaryTreeNode(root.value)
@@ -137,7 +139,8 @@ def get_parent(root, value):
     node_queue = [root]
     while node_queue:
         node = node_queue.pop(0)
-        if node.left and node.left.value == value or node.right and node.right.value == value:
+        if node.left and node.left.value == value or \
+                node.right and node.right.value == value:
             return node
         if node.left:
             node_queue.append(node.left)
@@ -200,14 +203,17 @@ def from_list(lst: List[ValueType]) -> Optional[BinaryTreeNode[ValueType]]:
     return root
 
 
-# Using level-order traversal in concat() can comply with the monoid group when implementing the function.
-def concat(root_A: Optional[BinaryTreeNode[ValueType]], root_B: Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[ValueType]]:
+# Using level-order traversal in concat() can comply with the monoid group
+# when implementing the function.
+def concat(root_A: Optional[BinaryTreeNode[ValueType]],
+           root_B: Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[ValueType]]:
     if root_A is None:
         return root_B
     if root_B is None:
         return root_A
-    
-    def level_order_traversal(root: Optional[BinaryTreeNode[ValueType]]) -> Optional[BinaryTreeNode[ValueType]]:
+
+    def level_order_traversal(root: Optional[BinaryTreeNode[ValueType]]) \
+            -> Optional[BinaryTreeNode[ValueType]]:
         level_order_list = []
         level_order_queue = [root]
         while level_order_queue:
@@ -219,7 +225,7 @@ def concat(root_A: Optional[BinaryTreeNode[ValueType]], root_B: Optional[BinaryT
             if node.right:
                 level_order_queue.append(node.right)
         return level_order_list
-    
+
     new_root = copy(root_A)
     new_node_list = level_order_traversal(root_B)
     for value in new_node_list:
@@ -257,7 +263,8 @@ def get_depth(node):
     return depth + max(left_depth, right_depth)
 
 
-def filter(root: Optional[BinaryTreeNode[ValueType]], f: Callable[[ValueType], bool]) -> set[ValueType]:
+def filter(root: Optional[BinaryTreeNode[ValueType]],
+           f: Callable[[ValueType], bool]) -> set[ValueType]:
     result_set: set[ValueType] = set()
     if root is not None:
         result_set.update(filter(root.left, f))
@@ -267,7 +274,7 @@ def filter(root: Optional[BinaryTreeNode[ValueType]], f: Callable[[ValueType], b
     return result_set
 
 
-def tmap(root,function):
+def tmap(root, function):
     if root is None:
         return None
 
