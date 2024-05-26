@@ -217,11 +217,11 @@ def concat(root_A: Optional[BinaryTreeNode[ValueType]],
 
     def level_order_traversal(root: Optional[BinaryTreeNode[ValueType]]) \
             -> list[ValueType]:
-        level_order_list = []
+        level_order_list: List[ValueType] = []
         level_order_queue = [root]
         while level_order_queue:
             level_size = len(level_order_queue)
-            current_level = []
+            current_level: List[ValueType] = []
             for _ in range(level_size):
                 node = level_order_queue.pop(0)
                 if node:
