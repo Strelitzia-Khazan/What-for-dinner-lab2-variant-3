@@ -60,7 +60,7 @@ class TestBinaryTreeSet(unittest.TestCase):
         self.assertEqual(reduced_value, 6)
 
     def setUp(self):
-        # 创建一棵简单的二叉树进行测试
+        # create a new BinaryTree
         self.root = BinaryTreeNode(1)
         self.root.left = BinaryTreeNode(2)
         self.root.right = BinaryTreeNode(3)
@@ -81,30 +81,28 @@ class TestBinaryTreeSet(unittest.TestCase):
         self.assertEqual(parent.value, 2)
 
     def test_remove_root(self):
-        # 创建一棵树：1 -> 2 -> 3
         root = from_list([1, 2, 3])
+        # delete root node
         new_root = remove(root, 1)
-        # 断言根节点是否被正确删除
         self.assertNotIn(1, to_list(new_root))
 
     def test_remove_leaf(self):
-        # 创建一棵树：1 -> 2 -> 3
+        # delete leaf node
         root = from_list([1, 2, 3])
         new_root = remove(root, 3)
-        # 断言叶子节点是否被正确删除
         self.assertIsNone(new_root.right)
 
     def test_remove_single_child_node(self):
+        # delete node which has single child
         root = from_list([1, 2, 3, 4])
         new_root = remove(root, 2)
-        # 断言具有单个子节点的节点是否被正确删除
         self.assertFalse(member(2, new_root))
 
     def test_remove_node_with_two_children(self):
+        # delete node which have two children
         root = from_list([1, 2, 3, 4, 5])
         new_root = remove(root, 2)
         print("tree:", to_list(new_root))
-        # 断言具有两个子节点的节点是否被正确删除
         self.assertFalse(member(2, new_root))
 
     def test_get_depth(self):
@@ -136,8 +134,8 @@ class TestBinaryTreeSet(unittest.TestCase):
         tree_C = from_list([9])
         intersected_values_ab = intersection(tree_A, tree_B)
         self.assertEqual(intersected_values_ab, set([4, 5]))
-        intersected_values_ad = intersection(tree_A, tree_C)
-        self.assertEqual(intersected_values_ad, set())
+        intersected_values_ac = intersection(tree_A, tree_C)
+        self.assertEqual(intersected_values_ac, set())
 
     @given(st.lists(st.integers()), st.lists(st.integers()),
            st.lists(st.integers()))
